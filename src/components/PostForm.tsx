@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { savePost, deletePost } from '../features/posts/postsSlice';
+import { savePost } from '../features/posts/postsSlice';
 import { Post } from '../types';
 import { AppDispatch } from '../app/store';
 
@@ -42,9 +42,9 @@ const [error, setError] = useState<error>({isError: false, message: ''});
     setTitle('');
     setBody('');
     setError({isError: false, message: ''})
-    } else {
-                    e.preventDefault();
-                    setError({isError: true, message: 'Add title and body to submit'})
+        } else {
+    e.preventDefault();
+    setError({isError: true, message: 'Add title and body to submit'})
 
     }
 

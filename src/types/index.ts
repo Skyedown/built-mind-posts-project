@@ -6,5 +6,4 @@ export interface Post {
 
 export interface PostsState {
   posts: Post[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
 }

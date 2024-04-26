@@ -17,7 +17,7 @@ export default function PostsList({ onSelectPost }: Props) {
   }, [dispatch]);
 
   const handleDelete = (id: number | undefined) => {
-    if (id !== undefined) { // Ensure id is not undefined before dispatching
+    if (id !== undefined) {
       dispatch(deletePost(id));
     } else {
       console.error("Cannot delete post without an id");

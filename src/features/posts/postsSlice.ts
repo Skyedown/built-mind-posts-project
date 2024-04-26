@@ -1,11 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Post, PostsState } from '../../types';
-import { RootState } from '../../app/store';
 
 const initialState: PostsState = {
   posts: [],
-  status: 'idle',
 };
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
@@ -13,7 +11,7 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return response.data;
 });
 
-export const savePost = createAsyncThunk('posts/savePost', async (post: Post, { getState }) => {
+export const savePost = createAsyncThunk('posts/savePost', async (post: Post) => {
   if (post.id) {
     const response = await axios.put<Post>(`https://jsonplaceholder.typicode.com/posts/${post.id}`, post);
     return response.data;
@@ -42,7 +40,7 @@ const postsSlice = createSlice({
           const index = state.posts.findIndex(post => post.id === action.payload.id);
           state.posts[index] = action.payload;
         } else {
-          state.posts.unshift(action.payload); // Add new posts to the top of the list
+          state.posts.unshift(action.payload);
         }
       })
       .addCase(deletePost.fulfilled, (state, action: PayloadAction<number>) => {
