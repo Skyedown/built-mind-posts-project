@@ -9,9 +9,16 @@ interface Props {
   clearSelected: () => void;
 }
 
+type error = {
+    isError: boolean,
+    message: string;
+}
+
 export default function PostForm({ post, clearSelected }: Props) {
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  const [title, setTitle] = useState<string>('');
+  const [body, setBody] = useState<string>('');
+const [error, setError] = useState<error>({isError: false, message: ''});
+
   const dispatch = useDispatch<AppDispatch>();
     const formRef = useRef<HTMLFormElement>(null);
 
@@ -28,17 +35,26 @@ export default function PostForm({ post, clearSelected }: Props) {
   }, [post]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    if(body && title) {
+          e.preventDefault();
     dispatch(savePost({ id: post?.id, title, body }));
     clearSelected();
     setTitle('');
     setBody('');
+    setError({isError: false, message: ''})
+    } else {
+                    e.preventDefault();
+                    setError({isError: true, message: 'Add title and body to submit'})
+
+    }
+
   };
 
    const handleCancel = () => {
     clearSelected();
     setTitle('');
     setBody('');
+    setError({isError:false , message:''})
   };
 
 return (
@@ -54,6 +70,7 @@ return (
         <button type="submit" className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark">{post ? 'Update' : 'Add'}</button>
         {post && <button type="button" onClick={handleCancel} className="px-4 py-2 bg-red-600 text-white rounded hover:bg-gray-600">Cancel</button>}
       </div>
+      {error.isError && (!title || !body) && <div className='bg-red-600 rounded text-white p-4 mt-4'>{error.message}</div>}
     </form>
   );
 }
